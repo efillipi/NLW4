@@ -15,14 +15,15 @@
     // Clonar repositório
     $ git clone https://github.com/efillipi/NLW4.git
 
-    // Acessar diretório
-    $ cd permissions_users
-
+    
     // Instalar dependências
     $ yarn
 
     // Iniciar projeto
-    $ yarn start
+    $ yarn dev
+
+    // Iniciar Testes
+    $ yarn test
 ```
 ---
 
