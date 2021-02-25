@@ -35,7 +35,7 @@ class UserController {
 
         const userAlreadyExists = await userRepository.find()
 
-        return response.json(userAlreadyExists)
+        return response.status(200).json(userAlreadyExists)
 
     }
 }

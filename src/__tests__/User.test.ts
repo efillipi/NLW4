@@ -39,5 +39,6 @@ describe("User", () => {
         const response = await request(app).get("/users");
 
         expect(response.body.length).toBe(2)
+        expect(response.status).toBe(200)
     })
 })
