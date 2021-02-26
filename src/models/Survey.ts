@@ -2,7 +2,7 @@ import {Entity,PrimaryColumn,Column} from 'typeorm'
 import {v1 as uuid} from 'uuid'
 
 @Entity('surveys')
-class Surveys{
+class Survey{
 
     @PrimaryColumn('uuid')
     readonly id: string;
@@ -23,4 +23,4 @@ class Surveys{
     }
 }
 
-export default Surveys;
+export default Survey;

@@ -3,6 +3,8 @@ import { getCustomRepository } from 'typeorm';
 import SurveyRepository from '../repositories/SurveyRepository';
 import SurveyUserRepository from '../repositories/SurveyUserRepository';
 import UserRepository from '../repositories/UserRepository';
+import SendMailServices from '../services/SendMailServices';
+import patch from 'path'
 
 class SendMailController {
 
@@ -16,34 +18,86 @@ class SendMailController {
         const surveyRepository = getCustomRepository(SurveyRepository)
         const surveyUserRepository = getCustomRepository(SurveyUserRepository)
 
-        const userAlreadtExists = await userRepository.findOne({
+        const npsPatch = patch.resolve(__dirname, "..", "views", "emails", "npsMail.hbs")
+
+
+        // ----------------------------------------------------------------------------------------------------
+
+        const user = await userRepository.findOne({
             email
         })
 
-        if (!userAlreadtExists) {
+        if (!user) {
             return response.status(400).json({
                 error: "User does not exists"
             })
         }
 
-        const surveyAlreadtExists = await surveyRepository.findOne({
+        // ----------------------------------------------------------------------------------------------------
+
+        const survey = await surveyRepository.findOne({
             id: survey_id
         })
 
-
-        if (!surveyAlreadtExists) {
+        if (!survey) {
             return response.status(400).json({
                 error: "Survey does not exists"
             })
         }
 
+        // ----------------------------------------------------------------------------------------------------
+
+        const variables = {
+            name: user.name,
+            title: survey.title,
+            description: survey.description,
+            user_id: user.id,
+            link: process.env.URL_MAIL,
+        }
+
+        // ----------------------------------------------------------------------------------------------------
+
+        const surveyUserAlreadyExists = await surveyUserRepository.findOne({
+            where: [
+                {
+                    user_id: user.id,
+                    survey_id: survey.id,
+                }
+            ],
+            relations: ['user', 'survey'],
+        })
+
+        if (surveyUserAlreadyExists) {
+
+            await SendMailServices.execute({
+                to: email,
+                subject: survey.title,
+                variables,
+                patch: npsPatch
+            })
+
+            return response.status(201).json(surveyUserAlreadyExists)
+        }
+
+        // ----------------------------------------------------------------------------------------------------
+
         const surveyUsers = surveyUserRepository.create({
-            user_id: userAlreadtExists.id,
+            user_id: user.id,
             survey_id: survey_id,
             created_at: data_atual
         })
 
         await surveyUserRepository.save(surveyUsers)
+
+        await SendMailServices.execute({
+            to: email,
+            subject: survey.title,
+            variables,
+            patch: npsPatch
+        })
+
+
+        // ----------------------------------------------------------------------------------------------------
 
         return response.status(201).json(surveyUsers)
     }
@@ -52,7 +106,9 @@ class SendMailController {
 
         const surveyUserRepository = getCustomRepository(SurveyUserRepository)
 
-        const surveys = await surveyUserRepository.find()
+        const surveys = await surveyUserRepository.find({
+            relations: ['user', 'survey'],
+        })
 
         return response.status(200).json(surveys)
 

@@ -71,7 +71,7 @@ export class CreateSurveysUsers1614258140395 implements MigrationInterface {
 
         await queryRunner.dropForeignKey(
             "surveys_users",
-            "surveys"
+            "fk_surveys_survey_id"
         );
 
         await queryRunner.dropTable('surveys_users')

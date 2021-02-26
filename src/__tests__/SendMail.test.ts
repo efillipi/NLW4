@@ -55,8 +55,6 @@ describe("SendMail", () => {
         expect(response.status).toBe(400);
     })
 
-    
-
     it(" Should be able to create a new SendMail with exits survey_id ", async () => {
         const response = await request(app).post("/sendMail")
             .send({
@@ -65,8 +63,6 @@ describe("SendMail", () => {
             })
         expect(response.status).toBe(400);
     })
-
-
 
     it(" Should be able to get all SendMails ", async () => {
 
