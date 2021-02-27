@@ -12,7 +12,7 @@ class SendMailController {
 
     async execute(request: Request, response: Response) {
 
-        const data_atual = new Date();
+        const current_date = new Date();
 
         const { email, survey_id } = request.body
 
@@ -33,7 +33,6 @@ class SendMailController {
         } catch (error) {
             throw new AppError(error, 422)
         }
-
 
         // ----------------------------------------------------------------------------------------------------
 
@@ -57,6 +56,16 @@ class SendMailController {
 
         // ----------------------------------------------------------------------------------------------------
 
+        const variables = {
+            name: user.name,
+            title: survey.title,
+            description: survey.description,
+            id: '',
+            link: process.env.URL_MAIL,
+        }
+
+        // ----------------------------------------------------------------------------------------------------
+
 
         const surveyUserAlreadyExists = await surveyUserRepository.findOne({
             where: [
@@ -67,16 +76,6 @@ class SendMailController {
             ],
             relations: ['user', 'survey'],
         })
-
-        // ----------------------------------------------------------------------------------------------------
-
-        const variables = {
-            name: user.name,
-            title: survey.title,
-            description: survey.description,
-            id: "",
-            link: process.env.URL_MAIL,
-        }
 
         // ----------------------------------------------------------------------------------------------------
 
@@ -99,7 +98,7 @@ class SendMailController {
         const surveyUsers = surveyUserRepository.create({
             user_id: user.id,
             survey_id: survey_id,
-            created_at: data_atual
+            created_at: current_date
         })
 
         await surveyUserRepository.save(surveyUsers)

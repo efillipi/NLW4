@@ -10,7 +10,7 @@ class UserController {
     async create(request: Request, response: Response) {
 
         const { name, email } = request.body
-        const data_atual = new Date();
+        const current_date = new Date();
 
         const schema = yup.object().shape({
             name: yup.string().required("Nome is Mandatory"),
@@ -34,7 +34,7 @@ class UserController {
         const user = userRepository.create({
             name,
             email,
-            created_at: data_atual
+            created_at: current_date
         })
 
         await userRepository.save(user)

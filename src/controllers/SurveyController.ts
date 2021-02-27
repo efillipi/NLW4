@@ -10,7 +10,7 @@ class SurveyController {
     async create(request: Request, response: Response) {
 
 
-        const data_atual = new Date();
+        const current_date = new Date();
 
         const { title, description } = request.body
 
@@ -31,7 +31,7 @@ class SurveyController {
         const survey = surveyRepository.create({
             title,
             description,
-            created_at: data_atual
+            created_at: current_date
         })
 
         await surveyRepository.save(survey)
