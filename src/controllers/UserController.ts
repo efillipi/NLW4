@@ -13,8 +13,8 @@ class UserController {
         const data_atual = new Date();
 
         const schema = yup.object().shape({
-            name: yup.string().required("Nome é Obrigatorio"),
-            email: yup.string().email().required("Email incorreto"),
+            name: yup.string().required("Nome is Mandatory"),
+            email: yup.string().email().required("Email incorrect"),
         })
 
         try {

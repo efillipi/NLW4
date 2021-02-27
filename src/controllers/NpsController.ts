@@ -11,7 +11,7 @@ class NpsController {
         const { survey_id } = request.params
 
         if (!survey_id) {
-            throw new AppError("survey_id é Obrigatorio", 422)
+            throw new AppError("survey_id é Mandatory", 422)
         }
 
         const surveyUserRepository = getCustomRepository(SurveyUserRepository)

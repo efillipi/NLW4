@@ -23,8 +23,8 @@ class SendMailController {
         const npsPatch = patch.resolve(__dirname, "..", "views", "emails", "npsMail.hbs")
 
         const schema = yup.object().shape({
-            survey_id: yup.string().required("survey_id é Obrigatorio"),
-            email: yup.string().email().required("Email incorreto"),
+            survey_id: yup.string().required("survey_id is Mandatory"),
+            email: yup.string().email().required("Email incorrect"),
         })
 
         try {

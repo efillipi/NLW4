@@ -17,8 +17,8 @@ class SurveyController {
         const surveyRepository = getCustomRepository(SurveyRepository)
 
         const schema = yup.object().shape({
-            title: yup.string().required("title é Obrigatorio"),
-            description: yup.string().required("description é Obrigatorio"),
+            title: yup.string().required("title is Mandatory"),
+            description: yup.string().required("description is Mandatory"),
         })
 
         try {
