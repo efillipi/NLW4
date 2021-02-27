@@ -35,10 +35,6 @@ class AnswersController {
 
     }
 
-    async getall(request: Request, response: Response) {
-    }
-
-
 }
 
 export default AnswersController

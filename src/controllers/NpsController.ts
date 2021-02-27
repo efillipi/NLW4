@@ -10,16 +10,16 @@ class NpsController {
 
         const { survey_id } = request.params
 
-        if (!survey_id) {
-            throw new AppError("survey_id é Mandatory", 422)
-        }
-
         const surveyUserRepository = getCustomRepository(SurveyUserRepository)
 
         const surveyUsers = await surveyUserRepository.find({
             survey_id,
             value: Not(IsNull()),
         })
+
+        if (surveyUsers.length === 0) {
+            throw new AppError("survey_id is invalid or was not answered", 422)
+        }
 
         const detractor = surveyUsers.filter(
             (survey) => survey.value >= 0 && survey.value <= 6
