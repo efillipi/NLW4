@@ -2,14 +2,17 @@ import { Request, Response } from 'express';
 import { getCustomRepository, Not, IsNull } from 'typeorm';
 
 import SurveyUserRepository from '../repositories/SurveyUserRepository';
-
+import AppError from '../errors/AppError';
 
 class NpsController {
-
 
     async execute(request: Request, response: Response) {
 
         const { survey_id } = request.params
+
+        if (!survey_id) {
+            throw new AppError("survey_id é Obrigatorio", 422)
+        }
 
         const surveyUserRepository = getCustomRepository(SurveyUserRepository)
 
@@ -40,6 +43,8 @@ class NpsController {
             totalAnsers,
             NPS: calculate
         })
+
+
 
     }
 
