@@ -21,7 +21,7 @@ class AnswersController {
 
         if (!surveyUser) {
             throw new AppError("surveyUser does not exists")
-            
+
         }
 
         // ----------------------------------------------------------------------------------------------------
